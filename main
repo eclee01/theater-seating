@@ -1,0 +1,147 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+const int numOfColumns = 5;
+void showSeats (bool [][numOfColumns], int);
+double setPrice(int arr[], int size);
+int main()
+{
+	int seatsInColumn = 5, sold = 0;
+	bool seatStatus [seatsInColumn][numOfColumns];
+	int rowPrice[seatsInColumn];
+	double moneyMade = 0;
+	
+	// 0 - Still Available
+	// 1 - Sold
+	for (int i = 0; i < seatsInColumn; i++){
+    	for (int j = 0; j < numOfColumns; j++){
+        	seatStatus [i][j] = 0;
+    	}
+    	rowPrice[i] = 0;
+	}
+	
+	int choice = 0;
+	
+	while (choice != 5){
+    	cout << "1 - See which seats are available\n";
+    	cout << "2 - Purchase tickets\n";
+    	cout << "3 - Set ticket prices (Note ** This is confidential)\n";
+    	cout << "4 - See total tickets sold\n";
+    	cout << "5 - Exit site\n";
+    	cout << "What would you like to do: ";
+    	cin >> choice;
+	
+    	if (choice == 1) {
+        	showSeats (seatStatus, seatsInColumn);
+        	int available = 0;
+        	
+        	for (int x = 0; x < seatsInColumn; x++) {
+        	    int open = 0;
+        	    cout << "Row " << x << ": ";
+        	    
+        	    for (int y = 0; y < numOfColumns; y++) {
+        	        if (seatStatus[x][y] == 0) {
+        	            open++;
+        	            available++;
+        	        }
+        	    }
+        	    cout << open << " seats avaiable\n";
+        	}
+        	cout << "Total seats available: " << available << "\n";
+    	} else if (choice == 2){
+        	showSeats (seatStatus, seatsInColumn);
+        	for (int i = 0; i < seatsInColumn; i++){
+            	cout << "\nRow " << i+1;
+            	if (i+1 < 10){
+                	cout << "  - $";
+            	} else {
+                	cout << " - $";
+            	}
+            	cout << rowPrice[i];
+        	}
+        	cout << '\n';
+        	
+        	int buyAgain = 0;
+        	while (buyAgain == 0){
+            	int rowChoice;
+            	int seatChoice;
+            	cout << "Which row would you like to sit in: ";
+            	cin >> rowChoice;
+            	cout << "Which seat would you like: ";
+            	cin >> seatChoice;
+        	
+            	if (seatStatus [rowChoice-1][seatChoice-1] == 1){
+                	cout << "That seat is not available. Please select another";
+                	cout << '\n';
+            	} else {
+                	seatStatus [rowChoice-1][seatChoice-1] = 1;
+                	//cout << "That will be $" << rowPrice[rowChoice-1] << '\n';
+                	moneyMade += rowPrice[rowChoice-1];
+                	sold++;
+                	showSeats (seatStatus, seatsInColumn);
+                	cout << "0 - Yes\n";
+                	cout << "1 - No\n";
+                	cout << "Would you like to purchase another ticket: ";
+                	cin >> buyAgain;
+            	}
+        	}
+        	//buySeats (seatStatus, price, seatsInColumn);
+    	} else if (choice == 3){
+        	int pass;
+        	cout << "\nWhat is the passcode: ";
+        	cin >> pass;
+        	if (pass == 43110){
+            	// Run the setPrice function here
+            	int setprice;
+            	for (int i = 0; i < seatsInColumn; i++) {
+                	cout << "\nEnter ticket price for Row " << i + 1 << ": ";
+                	cin >> rowPrice[i];
+    	
+                	//cout << rowPrice[i];
+            	}
+        	}
+        	else {
+        	    cout << endl;
+        	}
+    	} else if (choice == 4){
+    	    cout << "\nTotal tickets sold: " << sold << "\n";
+    	    cout << "Money made: $" << moneyMade << "\n\n";
+    	} else if (choice == 5) {
+    	    break;
+    	} else {
+        	cout << "invalid input\n";
+    	}
+	}
+	
+	cout << "Have a nice day!";
+	return 0;
+}
+void showSeats (bool seatStatus[][numOfColumns], int seatsInColumn){
+	cout << endl << "      	";
+	int t = 0;
+	for (int i = 0; i < numOfColumns; i++){
+    	t++;
+    	if (t == 10){
+        	t = 0;
+    	}
+    	cout << t;
+	}
+	for (int i = 0; i < seatsInColumn; i++){
+    	cout << '\n';
+    	cout << "Row " << i+1;
+    	if (i+1 < 10){
+        	cout << " 	";
+    	} else {
+        	cout << "	";
+    	}
+    	
+    	for (int j = 0; j < numOfColumns; j++){
+        	if (seatStatus[i][j] == 0){
+            	cout << "#";
+        	} else {
+            	cout << "*";
+        	}
+    	}
+	}
+	cout << "\n";
+}
